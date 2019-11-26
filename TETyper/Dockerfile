@@ -2,68 +2,47 @@
 FROM ubuntu:16.04
 
 run apt-get update && apt-get -y install \
-    apt-utils \
-    python-pip \
-    cython \
-    zlib1g-dev \    
-    libbz2-dev \
-    liblzma-dev \
     wget \
-    bash \
-    python3 \
-    gcc \
-    libz-dev \
     make \
-    libncurses5-dev
+    gcc
 
-WORKDIR /NGStools/
-
-
-
-# install SPAdes
-RUN  wget http://cab.spbu.ru/files/release3.13.1/SPAdes-3.13.1-Linux.tar.gz -O /tmp/spades.tar.gz && \
-     tar -xvzf /tmp/spades.tar.gz -C /opt/ && \
-     rm /tmp/spades.tar.gz
-
-ENV PATH="/opt/SPAdes-3.13.1-Linux/bin/:${PATH}"
+	
 
 
+# lets get miniconda to do installs
+RUN wget  --no-check-certificate https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh  
+RUN chmod +x Miniconda3-latest-Linux-x86_64.sh   
+RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/miniconda3
+ENV PATH /usr/miniconda3/bin:$PATH
+RUN conda config --add channels r
+RUN conda config --add channels conda-forge
+RUN conda config --add channels bioconda
+
+#install SPAdes
+RUN conda install spades --yes
+
+#install samtools
+RUN conda install samtools --yes
+
+#install bcftools
+run conda install bcftools --yes
+
+#install Blast
+run conda install blast --yes
+
+#install pysam via conda, less headaches via the pip install
+RUN conda install -c bioconda pysam
+
+run conda install -c bioconda bwa
 
 #install TETyper
 
 RUN pip install --upgrade pip
 
+
 RUN pip install TETyper
 
 
-
-ENV samtools_version 1.9
-ENV bcftools_version 1.9
-ENV htslib_version 1.9
-
-WORKDIR /usr/local/bin/
-
-#download tools
-RUN wget https://github.com/samtools/samtools/releases/download/${samtools_version}/samtools-${samtools_version}.tar.bz2
-RUN wget https://github.com/samtools/bcftools/releases/download/${bcftools_version}/bcftools-${bcftools_version}.tar.bz2
-RUN wget https://github.com/samtools/htslib/releases/download/${htslib_version}/htslib-${htslib_version}.tar.bz2
-
-# extract files for the suite of tools
-RUN tar -xjf /usr/local/bin/samtools-${samtools_version}.tar.bz2 -C /usr/local/bin/
-RUN tar -xjf /usr/local/bin/bcftools-${bcftools_version}.tar.bz2 -C /usr/local/bin/
-RUN tar -xjf /usr/local/bin/htslib-${htslib_version}.tar.bz2 -C /usr/local/bin/
-
-# run make on the source
-RUN cd /usr/local/bin/htslib-${htslib_version}/ && ./configure
-RUN cd /usr/local/bin/htslib-${htslib_version}/ && make
-RUN cd /usr/local/bin/htslib-${htslib_version}/ && make install
-
-RUN cd /usr/local/bin/samtools-${samtools_version}/ && ./configure
-RUN cd /usr/local/bin/samtools-${samtools_version}/ && make
-RUN cd /usr/local/bin/samtools-${samtools_version}/ && make install
-
-RUN cd /usr/local/bin/bcftools-${bcftools_version}/ && make
-RUN cd /usr/local/bin/bcftools-${bcftools_version}/ && make install
 
 
 
