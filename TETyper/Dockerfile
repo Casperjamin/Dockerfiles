@@ -33,13 +33,12 @@ run conda install blast --yes
 #install pysam via conda, less headaches via the pip install
 RUN conda install -c bioconda pysam
 
-run conda install -c bioconda bwa
+#install bwa for mapping 
+RUN conda install -c bioconda bwa
 
 #install TETyper
 RUN pip install --upgrade pip
 RUN pip install TETyper
-
-CMD TETyper.py
 
 
 
