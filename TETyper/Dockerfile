@@ -36,12 +36,10 @@ RUN conda install -c bioconda pysam
 run conda install -c bioconda bwa
 
 #install TETyper
-
 RUN pip install --upgrade pip
+RUN pip install TETyper
 
-
-CMD pip install TETyper
-
+CMD TETyper.py
 
 
 
