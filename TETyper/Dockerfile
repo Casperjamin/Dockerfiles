@@ -1,7 +1,7 @@
 
 FROM ubuntu:16.04
 
-run apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y install \
     wget \
     make \
     gcc
@@ -25,10 +25,10 @@ RUN conda install spades --yes
 RUN conda install samtools --yes
 
 #install bcftools
-run conda install bcftools --yes
+RUN conda install bcftools --yes
 
 #install Blast
-run conda install blast --yes
+RUN conda install blast --yes
 
 #install pysam via conda, less headaches via the pip install
 RUN conda install -c bioconda pysam
