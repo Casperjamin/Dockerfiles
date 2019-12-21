@@ -40,7 +40,7 @@ run conda install -c bioconda bwa
 RUN pip install --upgrade pip
 
 
-RUN pip install TETyper
+CMD pip install TETyper
 
 
 
