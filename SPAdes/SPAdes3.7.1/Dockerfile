@@ -1,11 +1,8 @@
-
 FROM ubuntu:16.04
 
 RUN apt-get update && apt-get -y install \
     wget \
     python
-
-
 
 RUN wget http://cab.spbu.ru/files/release3.7.1/SPAdes-3.7.1-Linux.tar.gz
 
