@@ -10,4 +10,4 @@ RUN wget http://cab.spbu.ru/files/release3.7.1/SPAdes-3.7.1-Linux.tar.gz
 
 RUN tar -xzf SPAdes-3.7.1-Linux.tar.gz
 
-ENV PATH="/SPAdes-3.7.1-Linux/bin:$PATH"
+ENV PATH="/NGStools/SPAdes-3.7.1-Linux/bin:$PATH"
